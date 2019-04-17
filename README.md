@@ -9,7 +9,7 @@
 ## Installation
 
 ``` sh
-ln --symbolic $PWD/scripts/translate-shell.lua $XDG_CONFIG_HOME/mpv/scripts/
+ln -s $PWD/scripts/translate-shell.lua $XDG_CONFIG_HOME/mpv/scripts/
 ```
 
 ## Configuration
