@@ -42,5 +42,5 @@ target=fr
 
 [mpv]: https://mpv.io
 [Translate Shell]: https://github.com/soimort/translate-shell
-[IRC]: https://webchat.freenode.net?channels=mpv
+[IRC]: https://webchat.freenode.net/#mpv
 [IRC Badge]: https://img.shields.io/badge/IRC-%23mpv-blue.svg
