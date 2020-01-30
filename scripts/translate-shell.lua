@@ -1,44 +1,40 @@
-mp.utils = require 'mp.utils'
 mp.options = require 'mp.options'
 
-properties = {
-  enabled = false
-}
+state = {}
+state.enabled = false
 
-options = {
-  target = 'auto'
-}
-
+options = {}
+options.target = 'auto'
 mp.options.read_options(options)
 
-hooks = {}
-
-hooks['sub-text'] = function(name, value)
-  text = mp.get_property('sub-text')
-  result = mp.utils.subprocess({
-    args = { 'trans', '-shell', '-brief', '-target', options.target, text }
+function on_sub_text_change(name, text)
+  result = mp.command_native({
+    name = 'subprocess',
+    capture_stdout = 'yes',
+    args = { 'trans', '-shell', '-brief', '-no-warn', '-target', options.target, '--', text }
   })
-  infinite = 60
-  mp.osd_message(result.stdout, infinite)
+  -- Let’s just pretend inf equals 60
+  inf = 60
+  mp.osd_message(result.stdout, inf)
 end
 
 function enable()
-  properties.enabled = true
+  state.enabled = true
   mp.set_property('osd-align-x', 'center')
   mp.set_property('osd-align-y', 'top')
-  mp.observe_property('sub-text', 'string', hooks['sub-text'])
+  mp.observe_property('sub-text', 'string', on_sub_text_change)
 end
 
 function disable()
-  properties.enabled = false
+  state.enabled = false
   mp.set_property('osd-align-x', 'left')
   mp.set_property('osd-align-y', 'top')
-  mp.unobserve_property(hooks['sub-text'])
+  mp.unobserve_property(on_sub_text_change)
   mp.osd_message('')
 end
 
 function toggle()
-  if properties.enabled then
+  if state.enabled then
     disable()
   else
     enable()
